@@ -4,7 +4,6 @@ describe "Authentication" do
 
   subject { page }
 
-
   describe "signin page" do
     before { visit signin_path }
 
@@ -20,12 +19,10 @@ describe "Authentication" do
 
 
       it { should have_selector('title', text: 'Sign in') }
-      it { should have_selector('div.alert.alert-error', text: 'Invalid') }
       it { should have_error_message }
 
         describe "after visiting another page" do
         before { click_link "Home" }
-        # it { should_not have_selector('div.alert.alert-error') }
         it { should_not have_error_message }
       end
     end
@@ -71,8 +68,6 @@ describe "Authentication" do
             before do
               click_link "Sign out"
               click_link "Sign in"
-              # delete signout_path
-              # visit signin_path
               fill_in "Email",    with: user.email
               fill_in "Password", with: user.password
               click_button "Sign in"
@@ -100,6 +95,16 @@ describe "Authentication" do
 
     describe "visiting the user index" do
       before { visit users_path }
+      it { should have_selector('title', text: 'Sign in') }
+    end
+
+    describe "visiting the following page" do
+      before { visit following_user_path(user) }
+      it { should have_selector('title', text: 'Sign in') }
+    end
+
+    describe "visiting the followers page" do
+      before { visit followers_user_path(user) }
       it { should have_selector('title', text: 'Sign in') }
     end
   end
@@ -148,4 +153,3 @@ end
     end
   end
 end
-
